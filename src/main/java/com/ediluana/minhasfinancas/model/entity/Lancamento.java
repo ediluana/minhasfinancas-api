@@ -3,8 +3,10 @@ package com.ediluana.minhasfinancas.model.entity;
 import com.ediluana.minhasfinancas.model.enums.StatusLancamento;
 import com.ediluana.minhasfinancas.model.enums.TipoLancamento;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -12,6 +14,8 @@ import java.util.Calendar;
 @Entity
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "lancamento", schema = "financas")
 public class Lancamento {
 

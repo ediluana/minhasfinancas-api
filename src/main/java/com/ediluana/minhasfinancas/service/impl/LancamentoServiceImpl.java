@@ -3,6 +3,7 @@ package com.ediluana.minhasfinancas.service.impl;
 import com.ediluana.minhasfinancas.excepition.RegraNegocioException;
 import com.ediluana.minhasfinancas.model.entity.Lancamento;
 import com.ediluana.minhasfinancas.model.enums.StatusLancamento;
+import com.ediluana.minhasfinancas.model.enums.TipoLancamento;
 import com.ediluana.minhasfinancas.model.repository.LancamentoRepository;
 import com.ediluana.minhasfinancas.service.LancamentoService;
 import jakarta.transaction.TransactionScoped;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 import java.nio.ReadOnlyBufferException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class LancamentoServiceImpl implements LancamentoService {
@@ -79,7 +81,7 @@ public class LancamentoServiceImpl implements LancamentoService {
         if (lancamento.getAno() == null || lancamento.getAno().toString().length() != 4) {
             throw new RegraNegocioException("Informe um Ano válido.");
         }
-        if (lancamento.getUsuario() == null || lancamento.getId() == null) {
+        if (lancamento.getUsuario() == null || lancamento.getUsuario().getId() == null) {
             throw new RegraNegocioException("Informe um Usuário");
         }
         if (lancamento.getValor() == null || lancamento.getValor().compareTo(BigDecimal.ZERO) < 1) {
@@ -89,5 +91,27 @@ public class LancamentoServiceImpl implements LancamentoService {
             throw new RegraNegocioException("Informe um Tipo de lançamento");
         }
 
+    }
+
+    @Override
+    public Optional<Lancamento> obterPorId(Long id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BigDecimal obterSaldoPorUsuario(Long id) {
+        BigDecimal receitas = repository.obterSaldoPorTipoLancamentoEUsuario(id, TipoLancamento.RECEITA);
+        BigDecimal despesas = repository.obterSaldoPorTipoLancamentoEUsuario(id, TipoLancamento.DESPESA);
+
+        if (receitas == null) {
+            receitas = BigDecimal.ZERO;
+        }
+
+        if (despesas == null) {
+            despesas = BigDecimal.ZERO;
+        }
+
+        return receitas.subtract(despesas);
     }
 }

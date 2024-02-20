@@ -6,8 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MinhasfinancasApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MinhasfinancasApplication.class, args);
-	}
+    public void testandoLiveReload() {
+        System.out.println("Live Reload funcionando");
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(MinhasfinancasApplication.class, args);
+    }
 
 }
