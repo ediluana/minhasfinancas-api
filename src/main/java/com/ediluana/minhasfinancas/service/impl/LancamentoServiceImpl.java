@@ -55,7 +55,7 @@ public class LancamentoServiceImpl implements LancamentoService {
 
     @Override
     @Transactional(readOnly = true) // apenas leitura
-    public List<Lancamento> buscar(Lancamento lancamentoFiltro) {
+    public List<Lancamento> buscar(Lancamento lancamentoFiltro) { //Example pega as propriedades populadas
         Example example = Example.of(lancamentoFiltro, ExampleMatcher.matching().withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)); //  busca somente com as informacoes populadas passadas
         // funcionalidade do spring data, pega instancia do objeto com os dados passados, faz a consulta
         // ExampleMatcher.matching().withIgnoreCase() - ignora se as strings estão de caixa alta ou baixa
@@ -82,13 +82,13 @@ public class LancamentoServiceImpl implements LancamentoService {
             throw new RegraNegocioException("Informe um Ano válido.");
         }
         if (lancamento.getUsuario() == null || lancamento.getUsuario().getId() == null) {
-            throw new RegraNegocioException("Informe um Usuário");
+            throw new RegraNegocioException("Informe um Usuário.");
         }
         if (lancamento.getValor() == null || lancamento.getValor().compareTo(BigDecimal.ZERO) < 1) {
-            throw new RegraNegocioException("Informe uma Valor válido");
+            throw new RegraNegocioException("Informe uma Valor válido.");
         }
         if (lancamento.getTipo() == null) {
-            throw new RegraNegocioException("Informe um Tipo de lançamento");
+            throw new RegraNegocioException("Informe um Tipo de lançamento.");
         }
 
     }
